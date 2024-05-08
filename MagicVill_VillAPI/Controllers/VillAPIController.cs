@@ -61,39 +61,38 @@ namespace MagicVill_VillAPI.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<VillaDTO> CreateVilla([FromBody] VillaDTO villaDTO)
+        public ActionResult<VillaDTO> CreateVilla([FromBody] VillaCreateDTO villaCreateDTO)
         {
             //if(!ModelState.IsValid)
             //{
             //    return BadRequest(ModelState);
             //}
 
-            if (_db.Villas.FirstOrDefault(u => u.Name.ToLower() == villaDTO.Name.ToLower()) != null)
+            if (_db.Villas.FirstOrDefault(u => u.Name.ToLower() == villaCreateDTO.Name.ToLower()) != null)
             {
                 ModelState.AddModelError("CusomError", "Villa already Exist!");
                 return BadRequest(ModelState);
             }
 
-            if (villaDTO == null)
+            if (villaCreateDTO == null)
             {
                 return BadRequest();
             }
-            if (villaDTO.Id > 0)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError);
-            }
+            //if (villaDTO.Id > 0)
+            //{
+            //    return StatusCode(StatusCodes.Status500InternalServerError);
+            //}
 
 
             Villa model = new()
             {
-                Amenity = villaDTO.Amenity,
-                Details = villaDTO.Details,
-                Id = villaDTO.Id,
-                ImageUrl = villaDTO.ImageUrl,
-                Name = villaDTO.Name,
-                Occupancy = villaDTO.Occupancy,
-                Rate = villaDTO.Rate,
-                Sqft = villaDTO.Sqft,
+                Amenity = villaCreateDTO.Amenity,
+                Details = villaCreateDTO.Details,
+                ImageUrl = villaCreateDTO.ImageUrl,
+                Name = villaCreateDTO.Name,
+                Occupancy = villaCreateDTO.Occupancy,
+                Rate = villaCreateDTO.Rate,
+                Sqft = villaCreateDTO.Sqft,
             };
 
             _db.Villas.Add(model);
@@ -104,7 +103,7 @@ namespace MagicVill_VillAPI.Controllers
 
             //return Ok(villaDTO);
 
-            return CreatedAtRoute("GetVilla", new { id = villaDTO.Id }, villaDTO);
+            return CreatedAtRoute("GetVilla", new { id = model.Id }, model);
         }
 
 
@@ -135,9 +134,9 @@ namespace MagicVill_VillAPI.Controllers
         [HttpPut("{id:int}")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult UpdateVilla(int id, [FromBody] VillaDTO villaDTO)
+        public IActionResult UpdateVilla(int id, [FromBody] VillaUpdateDTO villaUpdateDTO)
         {
-            if (villaDTO.Id == null || id != villaDTO.Id)
+            if (villaUpdateDTO.Id == null || id != villaUpdateDTO.Id)
             {
                 return BadRequest();
             }
@@ -149,14 +148,14 @@ namespace MagicVill_VillAPI.Controllers
 
             Villa model = new()
             {
-                Amenity = villaDTO.Amenity,
-                Details = villaDTO.Details,
-                Id = villaDTO.Id,
-                ImageUrl = villaDTO.ImageUrl,
-                Name = villaDTO.Name,
-                Occupancy = villaDTO.Occupancy,
-                Rate = villaDTO.Rate,
-                Sqft = villaDTO.Sqft,
+                Amenity = villaUpdateDTO.Amenity,
+                Details = villaUpdateDTO.Details,
+                Id = villaUpdateDTO.Id,
+                ImageUrl = villaUpdateDTO.ImageUrl,
+                Name = villaUpdateDTO.Name,
+                Occupancy = villaUpdateDTO.Occupancy,
+                Rate = villaUpdateDTO.Rate,
+                Sqft = villaUpdateDTO.Sqft,
             };
 
             _db.Villas.Update(model);
@@ -166,7 +165,7 @@ namespace MagicVill_VillAPI.Controllers
 
 
         [HttpPatch("{id:int}, Name=UpdatePartialVilla")]
-        public IActionResult UpdatePartialVilla(int id, JsonPatchDocument<VillaDTO> patchDTO)
+        public IActionResult UpdatePartialVilla(int id, JsonPatchDocument<VillaUpdateDTO> patchDTO)
         {
             if(patchDTO == null || id == 0)
             {
@@ -176,7 +175,7 @@ namespace MagicVill_VillAPI.Controllers
 
             var villa = _db.Villas.AsNoTracking().FirstOrDefault(u => u.Id == id);
 
-            VillaDTO villaDTO = new()
+            VillaUpdateDTO villaDTO = new()
             {
                 Amenity = villa.Amenity,
                 Details = villa.Details,
