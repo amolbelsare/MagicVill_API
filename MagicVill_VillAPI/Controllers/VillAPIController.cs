@@ -44,7 +44,6 @@ namespace MagicVill_VillAPI.Controllers
         {
             if (id == 0)
             {
-                //_logger.LogError("Get Villa Error with Id" + id);
                 _logger.Log("Get Villa Error with Id" + id, "error");
                 return BadRequest();
             }
@@ -53,7 +52,6 @@ namespace MagicVill_VillAPI.Controllers
             {
                 return NotFound();
             }
-            //return Ok(Villa);
             return Ok(_mapper.Map<VillaDTO>(Villa));
         }
 
