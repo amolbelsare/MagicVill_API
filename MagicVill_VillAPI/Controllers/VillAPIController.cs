@@ -120,7 +120,6 @@ namespace MagicVill_VillAPI.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
 
-
         public async Task<IActionResult> DeleteVilla(int id)
         {
             if (id == 0)
