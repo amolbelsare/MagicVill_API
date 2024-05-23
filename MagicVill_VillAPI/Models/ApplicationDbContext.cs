@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace MagicVill_VillAPI.Models
@@ -9,6 +10,8 @@ namespace MagicVill_VillAPI.Models
         {
         } 
         public DbSet<Villa> Villas { get; set; }
+        public DbSet<VillaNumber> VillaNumbers { get; set; }
+        
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
