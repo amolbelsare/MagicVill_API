@@ -1,4 +1,4 @@
-﻿using MagicVill_VillAPI.Models;
+﻿using MagicVill_VillAPI.Data;
 using MagicVill_VillAPI.Repository.IRepository;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;

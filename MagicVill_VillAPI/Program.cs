@@ -1,6 +1,6 @@
 using MagicVill_VillAPI;
+using MagicVill_VillAPI.Data;
 using MagicVill_VillAPI.Logging;
-using MagicVill_VillAPI.Models;
 using MagicVill_VillAPI.Repository;
 using MagicVill_VillAPI.Repository.IRepository;
 using Microsoft.EntityFrameworkCore;

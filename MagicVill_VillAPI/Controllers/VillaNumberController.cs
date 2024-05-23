@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using MagicVill_VillAPI.APIResponses;
 using MagicVill_VillAPI.Models;
+using MagicVill_VillAPI.Models.APIResponses;
 using MagicVill_VillAPI.Models.Dto;
 using MagicVill_VillAPI.Repository.IRepository;
 using Microsoft.AspNetCore.Mvc;

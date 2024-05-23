@@ -1,17 +1,18 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using MagicVill_VillAPI.Models;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
-namespace MagicVill_VillAPI.Models
+namespace MagicVill_VillAPI.Data
 {
     public class ApplicationDbContext : DbContext
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
-        } 
+        }
         public DbSet<Villa> Villas { get; set; }
         public DbSet<VillaNumber> VillaNumbers { get; set; }
-        
+
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
