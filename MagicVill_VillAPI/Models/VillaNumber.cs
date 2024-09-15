@@ -7,6 +7,7 @@ namespace MagicVill_VillAPI.Models
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int? VillaNo { get; set; }
+
         [ForeignKey("Villa")]
         public int VillaID { get; set; }
 

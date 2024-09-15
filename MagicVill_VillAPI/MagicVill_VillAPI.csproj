@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
-    <Nullable>enable</Nullable>
+    <Nullable>disable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
@@ -17,6 +17,10 @@
     </PackageReference>
     <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MagicVilla_Utitity\MagicVilla_Utitity.csproj" />
   </ItemGroup>
 
 </Project>
