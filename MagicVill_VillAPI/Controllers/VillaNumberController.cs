@@ -22,7 +22,7 @@ namespace MagicVill_VillAPI.Controllers
             _mapper = mapper;
             _dbVillaNumber = dbVillaNumber;
             _dbVilla = dbVilla;
-            _response = new APIResponse();
+            _response = new();
         }
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
