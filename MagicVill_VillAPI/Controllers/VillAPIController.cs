@@ -4,6 +4,7 @@ using MagicVill_VillAPI.Models;
 using MagicVill_VillAPI.Models.APIResponses;
 using MagicVill_VillAPI.Models.Dto;
 using MagicVill_VillAPI.Repository.IRepository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
@@ -28,6 +29,7 @@ namespace MagicVill_VillAPI.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<APIResponse>> GetVillas()
         {
@@ -49,6 +51,7 @@ namespace MagicVill_VillAPI.Controllers
         }
 
         [HttpGet("{id:int}", Name = "GetVilla")]
+        [Authorize(Roles = "admin")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -118,6 +121,7 @@ namespace MagicVill_VillAPI.Controllers
 
 
         [HttpDelete("{id:int}")]
+        [Authorize(Roles = "CUSTOME")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
