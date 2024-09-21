@@ -2,6 +2,7 @@
 using MagicVill_VillAPI.Models;
 using MagicVill_VillAPI.Models.Dto;
 using MagicVill_VillAPI.Repository.IRepository;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -39,11 +40,6 @@ namespace MagicVill_VillAPI.Repository
             && u.Password == loginRequestDTO.Password);
             if (user == null)
             {
-                return new LoginResponseDTO()
-                {
-                    User = null,
-                    Token = ""
-                };
             }
 
             //if User was found generate JWT Token
@@ -81,7 +77,7 @@ namespace MagicVill_VillAPI.Repository
             };
 
             _db.LocalUsers.Add(user);
-            await _db.SaveChangesAsync();
+             await _db.SaveChangesAsync();
             user.Password = "";
             return user;
         }
