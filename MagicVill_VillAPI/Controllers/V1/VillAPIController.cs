@@ -10,13 +10,12 @@ using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
-namespace MagicVill_VillAPI.Controllers
+namespace MagicVill_VillAPI.Controllers.V1
 {
     //[Route("api/[controller]]")]
     [Route("api/v{version:apiVersion}/VillaAPI")]
     [ApiController]
     [ApiVersion("1.0")]
-    [ApiVersion("2.0")]
 
     public class VillAPIController : ControllerBase
     {
@@ -29,11 +28,10 @@ namespace MagicVill_VillAPI.Controllers
             _logger = logger;
             _dbVilla = dbVilla;
             _mapper = mapper;
-            this._response = new();
+            _response = new();
         }
 
         [HttpGet]
-        [MapToApiVersion("1.0")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<APIResponse>> GetVillas()
         {
@@ -54,15 +52,6 @@ namespace MagicVill_VillAPI.Controllers
             return _response;
         }
 
-
-        //when working on api version upgrading from 1 to 2
-        [MapToApiVersion("2.0")]
-        [HttpGet]
-        public IEnumerable<string> Get() 
-        {
-            return new string[] { "Version1", "Version2" };
-        }
-
         [HttpGet("{id:int}", Name = "GetVilla")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -73,15 +62,15 @@ namespace MagicVill_VillAPI.Controllers
             {
                 _logger.Log("Get Villa Error with Id" + id, "error");
                 if (id == 0)
-                {                  
+                {
                     _response.StatusCode = HttpStatusCode.BadRequest;
-                    return BadRequest(_response);                
+                    return BadRequest(_response);
                 }
                 var Villa = await _dbVilla.GetAsync(u => u.Id == id);
                 if (Villa == null)
                 {
                     _response.StatusCode = HttpStatusCode.NotFound;
-                    return BadRequest(_response);                   
+                    return BadRequest(_response);
                 }
                 _response.Result = _mapper.Map<VillaDTO>(Villa);
                 _response.StatusCode = HttpStatusCode.OK;

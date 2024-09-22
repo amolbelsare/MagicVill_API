@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
-namespace MagicVill_VillAPI.Controllers
+namespace MagicVill_VillAPI.Controllers.V1
 {
     [Route("api/UsersAuth")]
     [ApiController]
@@ -19,7 +19,7 @@ namespace MagicVill_VillAPI.Controllers
         public UsersController(IUserRepository userRepos)
         {
             _userRepos = userRepos;
-            this._response = new();
+            _response = new();
         }
 
         [HttpPost("login")]
@@ -53,7 +53,7 @@ namespace MagicVill_VillAPI.Controllers
             }
 
             var user = await _userRepos.Register(model);
-            if (user == null) 
+            if (user == null)
             {
                 _response.IsSuccess = false;
                 _response.ErrorMessages.Add("Error while registering");
@@ -61,7 +61,7 @@ namespace MagicVill_VillAPI.Controllers
             }
 
             _response.StatusCode = HttpStatusCode.OK;
-            _response.IsSuccess = true;         
+            _response.IsSuccess = true;
             return Ok(_response);
         }
     }

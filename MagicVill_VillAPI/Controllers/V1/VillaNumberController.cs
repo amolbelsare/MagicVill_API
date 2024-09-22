@@ -6,7 +6,7 @@ using MagicVill_VillAPI.Repository.IRepository;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
-namespace MagicVill_VillAPI.Controllers
+namespace MagicVill_VillAPI.Controllers.V1
 {
     [Route("api/v{version:apiVersion}/VillaNumber")]
     [ApiController]
@@ -18,7 +18,7 @@ namespace MagicVill_VillAPI.Controllers
         private readonly IMapper _mapper;
 
         public VillaNumberController(IMapper mapper, IVillaNumbeRepository dbVillaNumber, IVillaRepository dbVilla)
-        {         
+        {
             _mapper = mapper;
             _dbVillaNumber = dbVillaNumber;
             _dbVilla = dbVilla;
@@ -89,7 +89,7 @@ namespace MagicVill_VillAPI.Controllers
                     ModelState.AddModelError("ErrorMessages", "Villa number already Exist!");
                     return BadRequest(ModelState);
                 }
-                if (await _dbVilla.GetAsync(u=> u.Id == villaNumberCreateDTO.VillaID) == null)
+                if (await _dbVilla.GetAsync(u => u.Id == villaNumberCreateDTO.VillaID) == null)
                 {
                     ModelState.AddModelError("ErrorMessages", "Villa ID Invalid!");
                     return BadRequest(ModelState);
@@ -103,8 +103,8 @@ namespace MagicVill_VillAPI.Controllers
                 await _dbVillaNumber.CreateAsync(villaNumber);
                 _response.Result = _mapper.Map<VillaNumberDTO>(villaNumber);
                 _response.StatusCode = HttpStatusCode.Created;
-                return CreatedAtRoute("GetVillaNumber",new { id = villaNumber.VillaNo }, _response);
-            } 
+                return CreatedAtRoute("GetVillaNumber", new { id = villaNumber.VillaNo }, _response);
+            }
             catch (Exception ex)
             {
                 _response.IsSuccess = false;
@@ -118,7 +118,7 @@ namespace MagicVill_VillAPI.Controllers
         {
             try
             {
-                if(id == 0)
+                if (id == 0)
                 {
                     _response.StatusCode = HttpStatusCode.BadRequest;
                     return BadRequest(_response);
@@ -128,7 +128,7 @@ namespace MagicVill_VillAPI.Controllers
                 {
                     _response.StatusCode = HttpStatusCode.NotFound;
                     return NotFound(_response);
-                }              
+                }
                 await _dbVillaNumber.RevmoveAsync(villnumber);
                 _response.Result = _mapper.Map<VillaNumberDTO>(villnumber);
                 _response.StatusCode = HttpStatusCode.NoContent;
@@ -146,7 +146,7 @@ namespace MagicVill_VillAPI.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<APIResponse>> UpdateVillaNumber(int id, [FromBody]VillaNumberUpdateDTO villaNumberUpdateDTO)
+        public async Task<ActionResult<APIResponse>> UpdateVillaNumber(int id, [FromBody] VillaNumberUpdateDTO villaNumberUpdateDTO)
         {
             try
             {
@@ -155,10 +155,10 @@ namespace MagicVill_VillAPI.Controllers
                     _response.StatusCode = HttpStatusCode.BadRequest;
                     return BadRequest(_response);
                 }
-                if (await _dbVilla.GetAsync(u =>u.Id == villaNumberUpdateDTO.VillaID) == null)
+                if (await _dbVilla.GetAsync(u => u.Id == villaNumberUpdateDTO.VillaID) == null)
                 {
                     ModelState.AddModelError("ErrorMessages", "VIlla ID is Invalid!");
-                    return BadRequest(ModelState);   
+                    return BadRequest(ModelState);
                 }
                 VillaNumber villaNumber = _mapper.Map<VillaNumber>(villaNumberUpdateDTO);
                 await _dbVillaNumber.UpdateAsync(villaNumber);
@@ -166,7 +166,7 @@ namespace MagicVill_VillAPI.Controllers
                 _response.StatusCode = HttpStatusCode.NoContent;
                 return Ok(villaNumber);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _response.IsSuccess = false;
                 _response.ErrorMessages = new List<string> { ex.ToString() };
