@@ -7,7 +7,7 @@ namespace MagicVill_VillAPI.Models.Dto
         public int Id { get; set; }
         [Required]
         [MaxLength(30)]
-        public string? Name { get; set; }
+        public string Name { get; set; }
         public string Details { get; set; }
         public double Rate { get; set; }
         public int Occupancy { get; set; }

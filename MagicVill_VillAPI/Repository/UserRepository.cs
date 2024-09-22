@@ -40,9 +40,15 @@ namespace MagicVill_VillAPI.Repository
             && u.Password == loginRequestDTO.Password);
             if (user == null)
             {
+                return new LoginResponseDTO()
+                {
+                    Token = "",
+                    User = null
+                };
             }
 
             //if User was found generate JWT Token
+
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(secretKey);
 
