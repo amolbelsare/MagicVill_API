@@ -93,7 +93,7 @@ namespace MagicVilla_Web.Controllers
             return View(model);
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> UpdateVillaNumber(int VillaNo)
         {
@@ -119,7 +119,7 @@ namespace MagicVilla_Web.Controllers
             return NotFound();
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UpdateVillaNumber(VillaNumberUpdateVM model)
@@ -154,7 +154,7 @@ namespace MagicVilla_Web.Controllers
             return View(model);
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> DeleteVillaNumber(int VillaNo)
         {
@@ -180,7 +180,7 @@ namespace MagicVilla_Web.Controllers
             return NotFound();
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteVillaNumber(VillaNumberDeleteVM model)

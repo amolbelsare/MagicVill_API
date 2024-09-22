@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using Asp.Versioning;
+using AutoMapper;
 using MagicVill_VillAPI.Logging;
 using MagicVill_VillAPI.Models;
 using MagicVill_VillAPI.Models.APIResponses;
@@ -12,8 +13,11 @@ using System.Net;
 namespace MagicVill_VillAPI.Controllers
 {
     //[Route("api/[controller]]")]
-    [Route("api/VillaAPI")]
+    [Route("api/v{version:apiVersion}/VillaAPI")]
     [ApiController]
+    [ApiVersion("1.0")]
+    [ApiVersion("2.0")]
+
     public class VillAPIController : ControllerBase
     {
         protected APIResponse _response;
@@ -29,7 +33,7 @@ namespace MagicVill_VillAPI.Controllers
         }
 
         [HttpGet]
-        //[Authorize]
+        [MapToApiVersion("1.0")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<APIResponse>> GetVillas()
         {
@@ -50,8 +54,16 @@ namespace MagicVill_VillAPI.Controllers
             return _response;
         }
 
+
+        //when working on api version upgrading from 1 to 2
+        [MapToApiVersion("2.0")]
+        [HttpGet]
+        public IEnumerable<string> Get() 
+        {
+            return new string[] { "Version1", "Version2" };
+        }
+
         [HttpGet("{id:int}", Name = "GetVilla")]
-        [Authorize(Roles = "admin")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -85,6 +97,7 @@ namespace MagicVill_VillAPI.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -119,13 +132,11 @@ namespace MagicVill_VillAPI.Controllers
             return _response;
         }
 
-
         [HttpDelete("{id:int}")]
-        [Authorize(Roles = "CUSTOME")]
+        [Authorize(Roles = "Admin")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-
         public async Task<ActionResult<APIResponse>> DeleteVilla(int id)
         {
             try
@@ -155,6 +166,7 @@ namespace MagicVill_VillAPI.Controllers
         }
 
         [HttpPut("{id:int}")]
+        [Authorize(Roles = "Admin")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<APIResponse>> UpdateVilla(int id, [FromBody] VillaUpdateDTO villaUpdateDTO)
@@ -180,8 +192,8 @@ namespace MagicVill_VillAPI.Controllers
             return _response;
         }
 
-
         [HttpPatch("{id:int}, Name=UpdatePartialVilla")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdatePartialVilla(int id, JsonPatchDocument<VillaUpdateDTO> patchDTO)
         {
             if (patchDTO == null || id == 0)

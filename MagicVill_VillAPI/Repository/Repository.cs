@@ -30,7 +30,7 @@ namespace MagicVill_VillAPI.Repository
             {
                 query = query.AsNoTracking();
             }
-            if (filter != null)
+            if (filter != null) 
             {
                 query = query.Where(filter);
             }
