@@ -6,11 +6,11 @@ using MagicVill_VillAPI.Repository;
 using MagicVill_VillAPI.Repository.IRepository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Serilog;
 using System.Text;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +23,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(option =>
 {
     option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultSQLConnection"));
 });
+builder.Services.AddResponseCaching();
 builder.Services.AddScoped<IVillaRepository, VillaRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IVillaNumbeRepository, VillaNumberRepository>();
@@ -53,7 +54,7 @@ builder.Services.AddAuthentication(x=>
 {
     x.RequireHttpsMetadata = false;
     x.SaveToken = true;
-    x.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+    x.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuerSigningKey = true,
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(key)),
@@ -64,6 +65,11 @@ builder.Services.AddAuthentication(x=>
 
 builder.Services.AddControllers(option =>
 {
+    option.CacheProfiles.Add("Default30",
+        new CacheProfile()
+        {
+            Duration = 30
+        });
     //option.ReturnHttpNotAcceptable = true;
 }).AddNewtonsoftJson().AddXmlDataContractSerializerFormatters();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -72,7 +78,7 @@ builder.Services.AddEndpointsApiExplorer();
 // To make the swagger test the JWT Authentication
 builder.Services.AddSwaggerGen( options =>
 {
-    options.AddSecurityDefinition("Beare", new OpenApiSecurityScheme
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Description =
         "JWT Authorization header using the Bearer scheme. \r\n\r\r " +
@@ -82,7 +88,7 @@ builder.Services.AddSwaggerGen( options =>
         In = ParameterLocation.Header,
         Scheme = "Beare"
     });
-    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement()
     {
         {
             new OpenApiSecurityScheme
@@ -102,7 +108,7 @@ builder.Services.AddSwaggerGen( options =>
     options.SwaggerDoc("v1", new OpenApiInfo
     {
         Version = "v1.0",
-        Title = "Magic Villa",
+        Title = "Magic Villa V1",
         Description = "API to manage Villa",
         TermsOfService = new Uri("https://example.com/terms"),
         Contact = new OpenApiContact
@@ -150,7 +156,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseAuthentication();
 app.UseAuthorization();
 

@@ -1,4 +1,5 @@
-﻿using MagicVill_VillAPI.Models.APIResponses;
+﻿using Asp.Versioning;
+using MagicVill_VillAPI.Models.APIResponses;
 using MagicVill_VillAPI.Models.Dto;
 using MagicVill_VillAPI.Repository;
 using MagicVill_VillAPI.Repository.IRepository;
@@ -7,10 +8,12 @@ using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
-namespace MagicVill_VillAPI.Controllers.V1
+namespace MagicVill_VillAPI.Controllers
 {
-    [Route("api/UsersAuth")]
+    [Route("api/v{version:apiVersion}/UsersAuth")]
     [ApiController]
+    [ApiVersionNeutral]
+
     public class UsersController : Controller
     {
         private readonly IUserRepository _userRepos;

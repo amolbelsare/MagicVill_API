@@ -32,6 +32,7 @@ namespace MagicVill_VillAPI.Controllers.V1
         }
 
         [HttpGet]
+        [ResponseCache(Duration = 30)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<APIResponse>> GetVillas()
         {
@@ -52,6 +53,8 @@ namespace MagicVill_VillAPI.Controllers.V1
             return _response;
         }
 
+
+        [ResponseCache(CacheProfileName = "Default30")]
         [HttpGet("{id:int}", Name = "GetVilla")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

@@ -35,7 +35,7 @@ namespace MagicVill_VillAPI.Controllers.V2
         [HttpGet]
         public IEnumerable<string> Get()
         {
-            return new string[] { "Version1", "Version2" };
+            return new string[] { "Amol", "Belsare" };
         }
     }
 }
