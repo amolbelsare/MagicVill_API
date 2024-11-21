@@ -55,12 +55,14 @@ namespace MagicVill_VillAPI.Controllers.V1
                 if (id == 0)
                 {
                     _response.StatusCode = HttpStatusCode.BadRequest;
+                    _response.IsSuccess = false;
                     return _response;
                 }
                 var Villanumber = await _dbVillaNumber.GetAsync(u => u.VillaNo == id);
                 if (Villanumber == null)
                 {
                     _response.StatusCode = HttpStatusCode.NotFound;
+                    _response.IsSuccess = false;
                     return BadRequest(_response);
                 }
                 _response.Result = _mapper.Map<VillaNumber>(Villanumber);
@@ -87,6 +89,7 @@ namespace MagicVill_VillAPI.Controllers.V1
                 if (await _dbVillaNumber.GetAsync(u => u.VillaNo == villaNumberCreateDTO.VillaNo) != null)
                 {
                     ModelState.AddModelError("ErrorMessages", "Villa number already Exist!");
+                    _response.IsSuccess = false;
                     return BadRequest(ModelState);
                 }
                 if (await _dbVilla.GetAsync(u => u.Id == villaNumberCreateDTO.VillaID) == null)
@@ -97,6 +100,7 @@ namespace MagicVill_VillAPI.Controllers.V1
                 if (villaNumberCreateDTO == null)
                 {
                     _response.StatusCode = HttpStatusCode.BadRequest;
+                    _response.IsSuccess = false;
                     return BadRequest(_response);
                 }
                 VillaNumber villaNumber = _mapper.Map<VillaNumber>(villaNumberCreateDTO);
@@ -121,12 +125,14 @@ namespace MagicVill_VillAPI.Controllers.V1
                 if (id == 0)
                 {
                     _response.StatusCode = HttpStatusCode.BadRequest;
+                    _response.IsSuccess = false;
                     return BadRequest(_response);
                 }
                 var villnumber = await _dbVillaNumber.GetAsync(v => v.VillaNo == id);
                 if (id == null)
                 {
                     _response.StatusCode = HttpStatusCode.NotFound;
+                    _response.IsSuccess = false;
                     return NotFound(_response);
                 }
                 await _dbVillaNumber.RevmoveAsync(villnumber);
@@ -153,6 +159,7 @@ namespace MagicVill_VillAPI.Controllers.V1
                 if (villaNumberUpdateDTO.VillaNo == null || id != villaNumberUpdateDTO.VillaNo)
                 {
                     _response.StatusCode = HttpStatusCode.BadRequest;
+                    _response.IsSuccess = false;
                     return BadRequest(_response);
                 }
                 if (await _dbVilla.GetAsync(u => u.Id == villaNumberUpdateDTO.VillaID) == null)

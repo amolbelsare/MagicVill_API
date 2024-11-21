@@ -1,3 +1,4 @@
+using Asp.Versioning;
 using MagicVilla_Web;
 using MagicVilla_Web.Services;
 using MagicVilla_Web.Services.IServices;
@@ -17,6 +18,21 @@ builder.Services.AddScoped<IVillaNumberService, VillaNumberService>();
 builder.Services.AddHttpClient<IAuthService, AuthService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+
+//API versioning 
+builder.Services.AddApiVersioning(options =>
+{
+    // Set default API version (optional)
+    options.AssumeDefaultVersionWhenUnspecified = true;
+    options.DefaultApiVersion = new ApiVersion(1, 0);
+    options.ReportApiVersions = true;
+}).AddApiExplorer(options =>
+{
+    // Customize API version group name format (optional)
+    options.GroupNameFormat = "'v'VVV";
+    options.SubstituteApiVersionInUrl = true;
+});
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(Options =>
@@ -58,7 +74,7 @@ app.UseSession();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "v{version:apiVersion}/{controller=Home}/{action=Index}/{id?}"); // Updated to include versioning
-    //pattern: "{controller=Home}/{action=Index}/{id?}");
+    //pattern: "v{version:apiVersion}/{controller=Home}/{action=Index}/{id?}"); // Updated to include versioning
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
